@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Vanguard Six-Zone Power</title>
+  <title>Vanguard Six-Zone Power + Crit</title>
   <style>
     body{
       font-family:sans-serif;
@@ -20,12 +20,11 @@
       font-size:22px;
     }
 
-    /* ใช้ grid อย่างเดียว — มือถือกดได้แน่นอน */
     .field{
       display:grid;
       grid-template-columns:repeat(3,1fr);
       gap:16px;
-      max-width:600px;
+      max-width:700px;
       width:100%;
     }
 
@@ -46,6 +45,7 @@
       display:grid;
       grid-template-columns:repeat(2,1fr);
       gap:6px;
+      margin-bottom:6px;
     }
 
     button{
@@ -63,9 +63,16 @@
     }
 
     .power{
-      font-size:26px;
+      font-size:22px;
       margin-top:8px;
       color:#6ee7b7;
+      font-weight:bold;
+    }
+
+    .crit{
+      font-size:20px;
+      margin-top:4px;
+      color:#fbbf24;
       font-weight:bold;
     }
 
@@ -78,20 +85,61 @@
       border-radius:10px;
       font-size:16px;
     }
-</style>
-
+  </style>
 </head>
 <body>
   <div>
-    <h1>สนามแวนการ์ด 6 ช่อง (กดครั้งละ +1000)</h1>
+    <h1>สนามแวนการ์ด 6 ช่อง (พลัง + คริ)</h1>
 
     <div class="field">
-      <div class="zone" data-zone="0"><h2>หน้า ซ้าย</h2><div class="btns"><button data-add="1000">+1000</button><button data-add="-1000">-1000</button></div><div class="power" id="p0">0</div></div>
-      <div class="zone" data-zone="1"><h2>หน้า กลาง (V)</h2><div class="btns"><button data-add="1000">+1000</button><button data-add="-1000">-1000</button></div><div class="power" id="p1">0</div></div>
-      <div class="zone" data-zone="2"><h2>หน้า ขวา</h2><div class="btns"><button data-add="1000">+1000</button><button data-add="-1000">-1000</button></div><div class="power" id="p2">0</div></div>
-      <div class="zone" data-zone="3"><h2>หลัง ซ้าย</h2><div class="btns"><button data-add="1000">+1000</button><button data-add="-1000">-1000</button></div><div class="power" id="p3">0</div></div>
-      <div class="zone" data-zone="4"><h2>หลัง กลาง</h2><div class="btns"><button data-add="1000">+1000</button><button data-add="-1000">-1000</button></div><div class="power" id="p4">0</div></div>
-      <div class="zone" data-zone="5"><h2>หลัง ขวา</h2><div class="btns"><button data-add="1000">+1000</button><button data-add="-1000">-1000</button></div><div class="power" id="p5">0</div></div>
+      <!-- Template zone: now includes crit counter -->
+      <div class="zone" data-zone="0">
+        <h2>หน้า ซ้าย</h2>
+        <div class="btns"><button data-add="1000">+1000</button><button data-add="-1000">-1000</button></div>
+        <div class="btns"><button data-crit="1">+1 คริ</button><button data-crit="-1">-1 คริ</button></div>
+        <div class="power" id="p0">0</div>
+        <div class="crit" id="c0">Crit: 1</div>
+      </div>
+
+      <div class="zone" data-zone="1">
+        <h2>หน้า กลาง (V)</h2>
+        <div class="btns"><button data-add="1000">+1000</button><button data-add="-1000">-1000</button></div>
+        <div class="btns"><button data-crit="1">+1 คริ</button><button data-crit="-1">-1 คริ</button></div>
+        <div class="power" id="p1">0</div>
+        <div class="crit" id="c1">Crit: 1</div>
+      </div>
+
+      <div class="zone" data-zone="2">
+        <h2>หน้า ขวา</h2>
+        <div class="btns"><button data-add="1000">+1000</button><button data-add="-1000">-1000</button></div>
+        <div class="btns"><button data-crit="1">+1 คริ</button><button data-crit="-1">-1 คริ</button></div>
+        <div class="power" id="p2">0</div>
+        <div class="crit" id="c2">Crit: 1</div>
+      </div>
+
+      <div class="zone" data-zone="3">
+        <h2>หลัง ซ้าย</h2>
+        <div class="btns"><button data-add="1000">+1000</button><button data-add="-1000">-1000</button></div>
+        <div class="btns"><button data-crit="1">+1 คริ</button><button data-crit="-1">-1 คริ</button></div>
+        <div class="power" id="p3">0</div>
+        <div class="crit" id="c3">Crit: 1</div>
+      </div>
+
+      <div class="zone" data-zone="4">
+        <h2>หลัง กลาง</h2>
+        <div class="btns"><button data-add="1000">+1000</button><button data-add="-1000">-1000</button></div>
+        <div class="btns"><button data-crit="1">+1 คริ</button><button data-crit="-1">-1 คริ</button></div>
+        <div class="power" id="p4">0</div>
+        <div class="crit" id="c4">Crit: 1</div>
+      </div>
+
+      <div class="zone" data-zone="5">
+        <h2>หลัง ขวา</h2>
+        <div class="btns"><button data-add="1000">+1000</button><button data-add="-1000">-1000</button></div>
+        <div class="btns"><button data-crit="1">+1 คริ</button><button data-crit="-1">-1 คริ</button></div>
+        <div class="power" id="p5">0</div>
+        <div class="crit" id="c5">Crit: 1</div>
+      </div>
     </div>
 
     <button class="resetAll" id="resetAll">รีเซ็ตทุกช่อง</button>
@@ -99,24 +147,37 @@
 
   <script>
     const power = [0,0,0,0,0,0];
+    const crit =  [1,1,1,1,1,1];
 
     document.addEventListener('click', e => {
       const btn = e.target.closest('[data-add]');
+      const critBtn = e.target.closest('[data-crit]');
+
       if(btn){
-        const zone = Number(btn.closest('.zone').getAttribute('data-zone'));
-        const val = Number(btn.getAttribute('data-add'));
+        const zone = Number(btn.closest('.zone').dataset.zone);
+        const val = Number(btn.dataset.add);
         power[zone] += val;
-        
         document.getElementById('p'+zone).textContent = power[zone].toLocaleString('en-US');
+      }
+
+      if(critBtn){
+        const zone = Number(critBtn.closest('.zone').dataset.zone);
+        const val = Number(critBtn.dataset.crit);
+        crit[zone] = Math.max(0, crit[zone] + val);
+        document.getElementById('c'+zone).textContent = "Crit: " + crit[zone];
       }
     });
 
     document.getElementById('resetAll').addEventListener('click', ()=>{
       for(let i=0;i<6;i++){
         power[i] = 0;
+        crit[i] = 1;
         document.getElementById('p'+i).textContent = 0;
+        document.getElementById('c'+i).textContent = "Crit: 1";
       }
     });
   </script>
-  </body>
+</body>
 </html>
+
+
