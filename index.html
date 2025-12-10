@@ -11,7 +11,7 @@
       color:white;
       display:flex;
       justify-content:center;
-      padding:30px;
+      padding:20px;
     }
 
     h1{
@@ -20,12 +20,13 @@
       font-size:22px;
     }
 
+    /* ปรับขนาดให้ responsive */
     .field{
       display:grid;
-      grid-template-columns:repeat(3,1fr);
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
       gap:16px;
-      max-width:700px;
       width:100%;
+      max-width:900px;
     }
 
     .zone{
@@ -49,12 +50,12 @@
     }
 
     button{
-      padding:10px;
+      padding:8px;
       background:#1e293b;
       border:0;
       border-radius:10px;
       color:#cbd5e1;
-      font-size:15px;
+      font-size:14px;
       cursor:pointer;
     }
 
@@ -85,6 +86,14 @@
       border-radius:10px;
       font-size:16px;
     }
+
+    /* มือถือให้ตัวหนังสือเล็กลง */
+    @media (max-width:480px){
+      h1{ font-size:18px; }
+      button{ font-size:12px; padding:7px; }
+      .power{ font-size:18px; }
+      .crit{ font-size:16px; }
+    }
   </style>
 </head>
 <body>
@@ -92,54 +101,53 @@
     <h1>สนามแวนการ์ด 6 ช่อง (พลัง + คริ)</h1>
 
     <div class="field">
-      <!-- Template zone: now includes crit counter -->
-      <div class="zone" data-zone="0">
-        <h2>หน้า ซ้าย</h2>
-        <div class="btns"><button data-add="1000">+1000</button><button data-add="-1000">-1000</button></div>
-        <div class="btns"><button data-crit="1">+1 คริ</button><button data-crit="-1">-1 คริ</button></div>
-        <div class="power" id="p0">0</div>
-        <div class="crit" id="c0">Crit: 1</div>
-      </div>
+      <!-- Template zone -->
+      <script>
+        const zoneNames = [
+          "หน้า ซ้าย","หน้า กลาง (V)","หน้า ขวา",
+          "หลัง ซ้าย","หลัง กลาง","หลัง ขวา"
+        ];
+      </script>
 
-      <div class="zone" data-zone="1">
-        <h2>หน้า กลาง (V)</h2>
-        <div class="btns"><button data-add="1000">+1000</button><button data-add="-1000">-1000</button></div>
-        <div class="btns"><button data-crit="1">+1 คริ</button><button data-crit="-1">-1 คริ</button></div>
-        <div class="power" id="p1">0</div>
-        <div class="crit" id="c1">Crit: 1</div>
-      </div>
+      <script>
+        document.write(
+          zoneNames.map((t,i)=>`
+          <div class="zone" data-zone="${i}">
+            <h2>${t}</h2>
 
-      <div class="zone" data-zone="2">
-        <h2>หน้า ขวา</h2>
-        <div class="btns"><button data-add="1000">+1000</button><button data-add="-1000">-1000</button></div>
-        <div class="btns"><button data-crit="1">+1 คริ</button><button data-crit="-1">-1 คริ</button></div>
-        <div class="power" id="p2">0</div>
-        <div class="crit" id="c2">Crit: 1</div>
-      </div>
+            <!-- ปุ่มพลัง -->
+            <div class="btns">
+              <button data-add="1000">+1000</button>
+              <button data-add="-1000">-1000</button>
+            </div>
 
-      <div class="zone" data-zone="3">
-        <h2>หลัง ซ้าย</h2>
-        <div class="btns"><button data-add="1000">+1000</button><button data-add="-1000">-1000</button></div>
-        <div class="btns"><button data-crit="1">+1 คริ</button><button data-crit="-1">-1 คริ</button></div>
-        <div class="power" id="p3">0</div>
-        <div class="crit" id="c3">Crit: 1</div>
-      </div>
+            <div class="btns">
+              <button data-add="5000">+5000</button>
+              <button data-add="-5000">-5000</button>
+            </div>
 
-      <div class="zone" data-zone="4">
-        <h2>หลัง กลาง</h2>
-        <div class="btns"><button data-add="1000">+1000</button><button data-add="-1000">-1000</button></div>
-        <div class="btns"><button data-crit="1">+1 คริ</button><button data-crit="-1">-1 คริ</button></div>
-        <div class="power" id="p4">0</div>
-        <div class="crit" id="c4">Crit: 1</div>
-      </div>
+            <div class="btns">
+              <button data-add="10000">+10000</button>
+              <button data-add="-10000">-10000</button>
+            </div>
 
-      <div class="zone" data-zone="5">
-        <h2>หลัง ขวา</h2>
-        <div class="btns"><button data-add="1000">+1000</button><button data-add="-1000">-1000</button></div>
-        <div class="btns"><button data-crit="1">+1 คริ</button><button data-crit="-1">-1 คริ</button></div>
-        <div class="power" id="p5">0</div>
-        <div class="crit" id="c5">Crit: 1</div>
-      </div>
+            <div class="btns">
+              <button data-add="100000000">+100M</button>
+              <button data-add="-100000000">-100M</button>
+            </div>
+
+            <!-- ปุ่มคริ -->
+            <div class="btns">
+              <button data-crit="1">+1 คริ</button>
+              <button data-crit="-1">-1 คริ</button>
+            </div>
+
+            <div class="power" id="p${i}">0</div>
+            <div class="crit"  id="c${i}">Crit: 1</div>
+          </div>
+        `).join("")
+      );
+      </script>
     </div>
 
     <button class="resetAll" id="resetAll">รีเซ็ตทุกช่อง</button>
@@ -147,7 +155,7 @@
 
   <script>
     const power = [0,0,0,0,0,0];
-    const crit =  [1,1,1,1,1,1];
+    const crit  = [1,1,1,1,1,1];
 
     document.addEventListener('click', e => {
       const btn = e.target.closest('[data-add]');
@@ -155,14 +163,15 @@
 
       if(btn){
         const zone = Number(btn.closest('.zone').dataset.zone);
-        const val = Number(btn.dataset.add);
+        const val  = Number(btn.dataset.add);
         power[zone] += val;
-        document.getElementById('p'+zone).textContent = power[zone].toLocaleString('en-US');
+        document.getElementById('p'+zone).textContent =
+          power[zone].toLocaleString('en-US');
       }
 
       if(critBtn){
         const zone = Number(critBtn.closest('.zone').dataset.zone);
-        const val = Number(critBtn.dataset.crit);
+        const val  = Number(critBtn.dataset.crit);
         crit[zone] = Math.max(0, crit[zone] + val);
         document.getElementById('c'+zone).textContent = "Crit: " + crit[zone];
       }
