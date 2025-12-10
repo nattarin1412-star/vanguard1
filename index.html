@@ -1,194 +1,160 @@
 <!doctype html>
 <html lang="th">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
-  <title>Vanguard Six-Zone Power + Crit</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Vanguard Counter</title>
 
-  <style>
-    body{
-      font-family:sans-serif;
-      background:#0b1220;
-      color:white;
-      padding:10px;
-      margin:0;
-      box-sizing:border-box;
-      width:100%;
-      overflow-x:hidden; /* ป้องกันหลุดจอ */
-    }
+<style>
+  body{
+    font-family:sans-serif;
+    background:#0b1220;
+    color:white;
+    margin:0;
+    padding:10px;
+  }
 
-    h1{
-      text-align:center;
-      margin:10px 0 20px;
-      font-size:20px;
-    }
+  h1{
+    text-align:center;
+    margin:5px 0 15px;
+    font-size:18px;
+  }
 
-    /* ปรับให้รองรับมือถือ 100% */
-    .field{
-      display:grid;
-      grid-template-columns:repeat(auto-fill, minmax(160px, 1fr));
-      gap:12px;
-      width:100%;
-    }
+  /* 3 หน้า + 3 หลัง */
+  .field{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+  }
 
-    .zone{
-      background:#111827;
-      padding:10px;
-      border-radius:12px;
-      box-shadow:0 0 10px rgba(0,0,0,.4);
-      text-align:center;
-      width:100%;
-      box-sizing:border-box;
-    }
+  .zone{
+    background:#111827;
+    padding:8px;
+    border-radius:10px;
+    box-shadow:0 0 6px rgba(0,0,0,.4);
+    text-align:center;
+  }
 
-    .zone h2{
-      margin:4px 0 8px;
-      font-size:14px;
-    }
+  .zone h2{
+    margin:2px 0 6px;
+    font-size:12px;
+  }
 
-    .btns{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:5px;
-      margin-bottom:5px;
-    }
+  .btns{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:4px;
+    margin-bottom:4px;
+  }
 
-    button{
-      padding:7px;
-      background:#1e293b;
-      border:0;
-      border-radius:8px;
-      color:#cbd5e1;
-      font-size:12px;
-      cursor:pointer;
-      width:100%;
-    }
+  button{
+    padding:5px;
+    background:#1e293b;
+    border:0;
+    border-radius:6px;
+    color:#cbd5e1;
+    font-size:11px;
+    cursor:pointer;
+  }
 
-    button:hover{
-      background:#334155;
-    }
+  button:hover{
+    background:#334155;
+  }
 
-    .power{
-      font-size:18px;
-      margin-top:6px;
-      color:#6ee7b7;
-      font-weight:bold;
-    }
+  .power{
+    font-size:16px;
+    margin-top:4px;
+    color:#6ee7b7;
+    font-weight:bold;
+  }
 
-    .crit{
-      font-size:15px;
-      margin-top:4px;
-      color:#fbbf24;
-      font-weight:bold;
-    }
+  .crit{
+    font-size:13px;
+    margin-top:2px;
+    color:#fbbf24;
+    font-weight:bold;
+  }
 
-    .resetAll{
-      margin-top:20px;
-      background:#ef4444 !important;
-      color:white !important;
-      padding:12px;
-      width:100%;
-      border-radius:10px;
-      font-size:16px;
-    }
-
-    /* มือถือจอเล็กมาก */
-    @media (max-width:360px){
-      .field{
-        grid-template-columns:repeat(auto-fill, minmax(140px,1fr));
-      }
-      button{
-        padding:6px;
-        font-size:11px;
-      }
-    }
-  </style>
+  .resetAll{
+    margin-top:14px;
+    background:#ef4444;
+    color:white;
+    padding:10px;
+    width:100%;
+    border-radius:10px;
+    font-size:14px;
+  }
+</style>
 </head>
+
 <body>
+<h1>Power + Crit Counter</h1>
 
-  <h1>สนามแวนการ์ด 6 ช่อง (พลัง + คริ)</h1>
+<div class="field" id="field"></div>
+<button class="resetAll" id="reset">รีเซ็ตทุกช่อง</button>
 
-  <div class="field" id="field"></div>
+<script>
+  const zones = ["หน้า ซ้าย","หน้า กลาง","หน้า ขวา","หลัง ซ้าย","หลัง กลาง","หลัง ขวา"];
+  const field = document.getElementById("field");
+  zones.forEach((name,i)=>{
+    field.innerHTML += `
+      <div class="zone" data-zone="${i}">
+        <h2>${name}</h2>
 
-  <button class="resetAll" id="resetAll">รีเซ็ตทุกช่อง</button>
-
-  <script>
-    const zoneNames = [
-      "หน้า ซ้าย","หน้า กลาง (V)","หน้า ขวา",
-      "หลัง ซ้าย","หลัง กลาง","หลัง ขวา"
-    ];
-
-    const field = document.getElementById("field");
-
-    // สร้างโซนอัตโนมัติแบบปลอดภัยกับมือถือ
-    zoneNames.forEach((name, i) => {
-      field.innerHTML += `
-        <div class="zone" data-zone="${i}">
-          <h2>${name}</h2>
-
-          <div class="btns">
-            <button data-add="1000">+1000</button>
-            <button data-add="-1000">-1000</button>
-          </div>
-
-          <div class="btns">
-            <button data-add="5000">+5000</button>
-            <button data-add="-5000">-5000</button>
-          </div>
-
-          <div class="btns">
-            <button data-add="10000">+10000</button>
-            <button data-add="-10000">-10000</button>
-          </div>
-
-          <div class="btns">
-            <button data-add="100000000">+100M</button>
-            <button data-add="-100000000">-100M</button>
-          </div>
-
-          <div class="btns">
-            <button data-crit="1">+1 คริ</button>
-            <button data-crit="-1">-1 คริ</button>
-          </div>
-
-          <div class="power" id="p${i}">0</div>
-          <div class="crit" id="c${i}">Crit: 1</div>
+        <div class="btns">
+          <button data-add="1000">+1k</button><button data-add="-1000">-1k</button>
         </div>
-      `;
-    });
 
-    const power = [0,0,0,0,0,0];
-    const crit  = [1,1,1,1,1,1];
+        <div class="btns">
+          <button data-add="5000">+5k</button><button data-add="-5000">-5k</button>
+        </div>
 
-    document.addEventListener('click', e => {
-      const btn = e.target.closest('[data-add]');
-      const critBtn = e.target.closest('[data-crit]');
+        <div class="btns">
+          <button data-add="10000">+10k</button><button data-add="-10000">-10k</button>
+        </div>
 
-      if(btn){
-        const zone = Number(btn.closest('.zone').dataset.zone);
-        const val  = Number(btn.dataset.add);
-        power[zone] += val;
-        document.getElementById('p'+zone).textContent =
-          power[zone].toLocaleString('en-US');
-      }
+        <div class="btns">
+          <button data-add="100000000">+100M</button>
+          <button data-add="-100000000">-100M</button>
+        </div>
 
-      if(critBtn){
-        const zone = Number(critBtn.closest('.zone').dataset.zone);
-        const val  = Number(critBtn.dataset.crit);
-        crit[zone] = Math.max(0, crit[zone] + val);
-        document.getElementById('c'+zone).textContent =
-          "Crit: " + crit[zone];
-      }
-    });
+        <div class="btns">
+          <button data-crit="1">+Crit</button><button data-crit="-1">-Crit</button>
+        </div>
 
-    document.getElementById('resetAll').addEventListener('click', ()=>{
-      for(let i=0;i<6;i++){
-        power[i] = 0;
-        crit[i] = 1;
-        document.getElementById('p'+i).textContent = 0;
-        document.getElementById('c'+i).textContent = "Crit: 1";
-      }
-    });
-  </script>
+        <div class="power" id="p${i}">0</div>
+        <div class="crit" id="c${i}">Crit: 1</div>
+      </div>
+    `;
+  });
+
+  const power = Array(6).fill(0);
+  const crit  = Array(6).fill(1);
+
+  document.addEventListener("click", e=>{
+    const btn = e.target;
+
+    if(btn.dataset.add){
+      const zone = btn.closest(".zone").dataset.zone;
+      power[zone] += Number(btn.dataset.add);
+      document.getElementById("p"+zone).textContent = power[zone].toLocaleString();
+    }
+
+    if(btn.dataset.crit){
+      const zone = btn.closest(".zone").dataset.zone;
+      crit[zone] = Math.max(0, crit[zone] + Number(btn.dataset.crit));
+      document.getElementById("c"+zone).textContent = "Crit: " + crit[zone];
+    }
+  });
+
+  document.getElementById("reset").onclick = ()=>{
+    for(let i=0;i<6;i++){
+      power[i]=0; crit[i]=1;
+      document.getElementById("p"+i).textContent=0;
+      document.getElementById("c"+i).textContent="Crit: 1";
+    }
+  };
+</script>
+
 </body>
 </html>
