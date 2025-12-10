@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Vanguard Six-Zone Power</title>
+  <style>
+    body{
+      font-family:sans-serif;
+      background:#0b1220;
+      color:white;
+      display:flex;
+      justify-content:center;
+      padding:30px;
+    }
+
+    h1{
+      text-align:center;
+      margin-bottom:20px;
+      font-size:22px;
+    }
+
+    /* ใช้ grid อย่างเดียว — มือถือกดได้แน่นอน */
+    .field{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
+      max-width:600px;
+      width:100%;
+    }
+
+    .zone{
+      background:#111827;
+      padding:14px;
+      border-radius:12px;
+      box-shadow:0 0 12px rgba(0,0,0,.5);
+      text-align:center;
+    }
+
+    .zone h2{
+      margin:6px 0 10px;
+      font-size:16px;
+    }
+
+    .btns{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:6px;
+    }
+
+    button{
+      padding:10px;
+      background:#1e293b;
+      border:0;
+      border-radius:10px;
+      color:#cbd5e1;
+      font-size:15px;
+      cursor:pointer;
+    }
+
+    button:hover{
+      background:#334155;
+    }
+
+    .power{
+      font-size:26px;
+      margin-top:8px;
+      color:#6ee7b7;
+      font-weight:bold;
+    }
+
+    .resetAll{
+      margin-top:20px;
+      background:#ef4444 !important;
+      color:white !important;
+      padding:12px;
+      width:100%;
+      border-radius:10px;
+      font-size:16px;
+    }
+</style>
+
+</head>
+<body>
+  <div>
+    <h1>สนามแวนการ์ด 6 ช่อง (กดครั้งละ +1000)</h1>
+
+    <div class="field">
+      <div class="zone" data-zone="0"><h2>หน้า ซ้าย</h2><div class="btns"><button data-add="1000">+1000</button><button data-add="-1000">-1000</button></div><div class="power" id="p0">0</div></div>
+      <div class="zone" data-zone="1"><h2>หน้า กลาง (V)</h2><div class="btns"><button data-add="1000">+1000</button><button data-add="-1000">-1000</button></div><div class="power" id="p1">0</div></div>
+      <div class="zone" data-zone="2"><h2>หน้า ขวา</h2><div class="btns"><button data-add="1000">+1000</button><button data-add="-1000">-1000</button></div><div class="power" id="p2">0</div></div>
+      <div class="zone" data-zone="3"><h2>หลัง ซ้าย</h2><div class="btns"><button data-add="1000">+1000</button><button data-add="-1000">-1000</button></div><div class="power" id="p3">0</div></div>
+      <div class="zone" data-zone="4"><h2>หลัง กลาง</h2><div class="btns"><button data-add="1000">+1000</button><button data-add="-1000">-1000</button></div><div class="power" id="p4">0</div></div>
+      <div class="zone" data-zone="5"><h2>หลัง ขวา</h2><div class="btns"><button data-add="1000">+1000</button><button data-add="-1000">-1000</button></div><div class="power" id="p5">0</div></div>
+    </div>
+
+    <button class="resetAll" id="resetAll">รีเซ็ตทุกช่อง</button>
+  </div>
+
+  <script>
+    const power = [0,0,0,0,0,0];
+
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('[data-add]');
+      if(btn){
+        const zone = Number(btn.closest('.zone').getAttribute('data-zone'));
+        const val = Number(btn.getAttribute('data-add'));
+        power[zone] += val;
+        
+        document.getElementById('p'+zone).textContent = power[zone].toLocaleString('en-US');
+      }
+    });
+
+    document.getElementById('resetAll').addEventListener('click', ()=>{
+      for(let i=0;i<6;i++){
+        power[i] = 0;
+        document.getElementById('p'+i).textContent = 0;
+      }
+    });
+  </script>
+  </body>
+</html>
