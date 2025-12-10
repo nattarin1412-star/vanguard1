@@ -20,7 +20,6 @@
       font-size:22px;
     }
 
-    /* ใช้ grid อย่างเดียว — มือถือกดได้แน่นอน */
     .field{
       display:grid;
       grid-template-columns:repeat(3,1fr);
@@ -78,9 +77,9 @@
       border-radius:10px;
       font-size:16px;
     }
-</style>
-
+  </style>
 </head>
+
 <body>
   <div>
     <h1>สนามแวนการ์ด 6 ช่อง (กดครั้งละ +1000)</h1>
@@ -103,10 +102,9 @@
     document.addEventListener('click', e => {
       const btn = e.target.closest('[data-add]');
       if(btn){
-        const zone = Number(btn.closest('.zone').getAttribute('data-zone'));
-        const val = Number(btn.getAttribute('data-add'));
+        const zone = Number(btn.closest('.zone').dataset.zone);
+        const val = Number(btn.dataset.add);
         power[zone] += val;
-        
         document.getElementById('p'+zone).textContent = power[zone].toLocaleString('en-US');
       }
     });
@@ -118,5 +116,5 @@
       }
     });
   </script>
-  </body>
+</body>
 </html>
